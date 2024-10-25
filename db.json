@@ -10,9 +10,16 @@
     {
       "title": "Vue js",
       "description": "javaScript фреймворк для создания пользовательских интерфейсов.",
-      "published": true,
+      "published": false,
       "published_from": "2024-25-10",
       "id": "79fe"
+    },
+    {
+      "title": "Angular",
+      "description": "For beginner and",
+      "published": true,
+      "published_from": "2024-25-10",
+      "id": "df71"
     }
   ]
 }

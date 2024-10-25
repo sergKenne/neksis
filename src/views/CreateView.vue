@@ -38,9 +38,8 @@ const handleCheckbox = (payload: boolean) => {
 const createPost = () => {
   if (post.title.trim().length < 1 || post.description.trim().length < 1) {
     info.value = "все поля обязательны для заполнения"
-    if (post.title.trim().length > 50) {
-      msg.value = "строка, не более 50 символов"
-    }
+  } else if (post.title.trim().length > 50){
+    msg.value = "строка, не более 50 символов"
   } else {
     fetch("http://localhost:3000/posts", {
       method: "POST",

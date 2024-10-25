@@ -2,7 +2,8 @@
   <div class="container content">
     <h1 class="content__title">Edit post</h1>
     <form @submit.prevent="editPost" class=" content__form">
-      <InputForm name="title" :value="post?.title" @onInput="handleChange" />
+      <p v-if="info" class="content__info-msg">{{ info }}</p>
+      <InputForm name="title" :value="post?.title" @onInput="handleChange" :msg="msg" />
       <InputForm name="description" :value="post?.description" @onInput="handleChange" />
       <Checkbox :value="post?.published" @onCheck="handleCheckbox" />
       <button class="content__btn" type="submit">Edit</button>
@@ -13,8 +14,8 @@
 <script setup lang="ts">
 import InputForm from '@/components/InputForm.vue';
 import Checkbox from '@/components/Checkbox.vue';
-import { useRoute, useRouter, } from 'vue-router';
-import { onMounted, reactive } from 'vue';
+import { useRoute, useRouter} from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
 const route = useRoute()
 const router = useRouter()
 const post = reactive({
@@ -22,6 +23,8 @@ const post = reactive({
   description: "",
   published: false
 })
+const info = ref("")
+const msg = ref("")
 
 const handleChange = (payload: { name: string, value: string }) => {
   post[payload.name] = payload.value;
@@ -32,22 +35,29 @@ const handleCheckbox = (payload: boolean) => {
 }
 
 const editPost = () => {
-  fetch(`http://localhost:3000/posts/${route.params.id}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      title: post.title,
-      description: post.description,
-      published: post.published,
-      published_from: new Date().toLocaleDateString().split("/").reverse().join("-")
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then(res => {
-      console.log(res.json())
-      router.push({ name: "posts" })
+  if (post.title.trim().length < 1 || post.description.trim().length < 1) {
+    info.value = "все поля обязательны для заполнения"
+  } else if (post.title.trim().length > 50) {
+    msg.value = "строка, не более 50 символов"
+  } else {
+    fetch(`http://localhost:3000/posts/${route.params.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        title: post.title,
+        description: post.description,
+        published: post.published,
+        published_from: new Date().toLocaleDateString().split("/").reverse().join("-")
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
     })
+      .then(res => {
+        console.log(res.json())
+        router.push({ name: "posts" })
+      })
+  }
+  
 }
 
 onMounted(() => {
