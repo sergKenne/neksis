@@ -23,8 +23,6 @@ const post = reactive({
   published: false
 })
 
-console.log(route)
-
 const handleChange = (payload: { name: string, value: string }) => {
   post[payload.name] = payload.value;
 }
@@ -47,9 +45,8 @@ const editPost = () => {
     },
   })
     .then(res => {
-      console.log(res)
+      console.log(res.json())
       router.push({ name: "posts" })
-
     })
 }
 

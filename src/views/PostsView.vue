@@ -22,7 +22,6 @@ const posts = ref([])
 const error = ref("")
 const inputVal = ref("")
 
-
 const fetchPosts = async (url: string) => {
   try {
     const response = await fetch(url)
@@ -40,7 +39,6 @@ watch(inputVal, debounce((newVal: string) => {
   const url = `http://localhost:3000/posts?title=${newVal}`
   fetchPosts(url)
 }, 700))
-
 
 onMounted(() => {
   fetchPosts('http://localhost:3000/posts')

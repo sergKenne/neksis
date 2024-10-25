@@ -18,7 +18,7 @@ import { defineProps, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const props = defineProps<{ closeModal: () => void, id: number }>()
+const props = defineProps<{ closeModal: () => void, id: string }>()
 
 const deletePost = () => {
   fetch(`http://localhost:3000/posts/${props.id}`, {
